@@ -16,11 +16,9 @@ The automation uses Cucumber- BDD framework (Gerkins), with JAVA as the programi
 ## Setup project and executing tests ##
 1. Clone repository "https://github.com/x22114386/GitHubSearchAPIAutomationTesting.git"
 2. Open project in IntelliJ Idea
-3. Execute below command to run test
+3. Execute below command to run test (Terminal)
 `mvn clean test`
-4. Build the Maven Project
-5. go to /GitHubSearchAPIAutomationTesting/src/java/runner/TestRunner
-6. run the TestRunner file.
+
 
 Note:
 /GitHubSearchAPIAutomationTesting/src/java/features/SearchRepositories.feature 

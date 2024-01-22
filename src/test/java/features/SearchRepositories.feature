@@ -68,15 +68,34 @@ Feature: GitHub search repository API
       | spring      | java     | 2021-06-05  | x22114386    | stars  | desc      | 10      | 200                | contain repositories                      |
       | invalid     | python   | 2022-01-01  | invalid_user | forks  | asc       | 5       | 422                | contain "Validation Failed" error message |
 
+  #09. Extensive search
+  Scenario Outline: Retrieve GitHub repositories based on search criteria
+    Given the GitHub API is accessible
+    When I make a GET request to "/search/repositories" with the following query parameters:
+      | searchQuery | <searchQuery> |
+      | description | <description> |
+      | topics      | <topics>      |
+      | readme      | <readme>      |
+      | sort        | <sortBy>      |
+      | order       | <sortOrder>   |
+      | per_page    | <perPage>     |
+    Then the response status code should be <expectedStatusCode>
+    And the response should <expectedResult>
 
-  #09. Invalid Date Format:
+    Examples:
+      | searchQuery | description | topics     | readme       | sortBy | sortOrder | perPage | expectedStatusCode | expectedResult                            |
+      | spring      | java        | java       | x22114386    | stars  | desc      | 10      | 200                | contain repositories                      |
+      | invalid     | python      | 2022-01-01 | invalid_user | forks  | asc       | 5       | 422                | contain "Validation Failed" error message |
+
+
+  #10. Invalid Date Format:
   Scenario: Retrieve GitHub repositories with an invalid date format
     Given the GitHub API is accessible
     When I make a GET request to "/search/repositories" with the query parameter "created:2022/01/18"
     Then the response status code should be 422
     And the response should contain an error message indicating the date is "not a recognized date/time format"
 
-  #10. Empty Query Parameter:
+  #11. Empty Query Parameter:
   Scenario: Retrieve GitHub repositories with an empty query parameter
     Given the GitHub API is accessible
     When I make a GET request to "/search/repositories" with the query parameter ""
@@ -84,7 +103,7 @@ Feature: GitHub search repository API
     And the response should contain an error message with field "q" and code "missing"
 
 
-  #11. Invalid API Endpoint:
+  #12. Invalid API Endpoint:
   Scenario: Access an invalid GitHub API endpoint
     Given the GitHub API is accessible
     When I make a GET request to "/search/invalid-endpoint" with the query parameter "created:2022/01/18"
